@@ -1,4 +1,4 @@
-# AAX Converter
+# Audible AAX Converter
 
 Note that even though this project has "converter" in the title, it doesn't actually perform any re-encoding of aax files.  Instead, the information contained in the files are extracted in their original form, stripped of encryption, and placed in a more open "container" that you can then play on the device or software of your choosing.  This allows me (and you) to archive your legally-obtained audiobooks with zero loss in quality and no messy transcodings (such as from AAX to WAV to FLAC to preserve the audio quality).  It also allows you to keep the cover art and metadata (such as chapters!), which is something that transcoders of AAX files typically do not retain.  Also, since the files are almost simply copied and pasted, this script will convert your aax files about as fast as your hard drive can copy data.
 
@@ -60,9 +60,9 @@ The cover art and audio files will be renamed to reflect the author and title, i
 
 ## References
 
-[https://github.com/inAudible-NG/audible-activator](https://github.com/inAudible-NG/audible-activator)
-[https://ffmpeg.org/ffmpeg-codecs.html](https://ffmpeg.org/ffmpeg-codecs.html)
-[https://ffmpeg.org/ffmpeg-bitstream-filters.html](https://ffmpeg.org/ffmpeg-bitstream-filters.html)
-[https://ffmpeg.org/ffmpeg.html](https://ffmpeg.org/ffmpeg.html)
-[https://ffmpeg.org/ffprobe.html](https://ffmpeg.org/ffprobe.html)
-[https://en.wikipedia.org/wiki/Comparison_of_video_container_formats](https://en.wikipedia.org/wiki/Comparison_of_video_container_formats)
+* [https://github.com/inAudible-NG/audible-activator](https://github.com/inAudible-NG/audible-activator)
+* [https://ffmpeg.org/ffmpeg-codecs.html](https://ffmpeg.org/ffmpeg-codecs.html)
+* [https://ffmpeg.org/ffmpeg-bitstream-filters.html](https://ffmpeg.org/ffmpeg-bitstream-filters.html)
+* [https://ffmpeg.org/ffmpeg.html](https://ffmpeg.org/ffmpeg.html)
+* [https://ffmpeg.org/ffprobe.html](https://ffmpeg.org/ffprobe.html)
+* [https://en.wikipedia.org/wiki/Comparison_of_video_container_formats](https://en.wikipedia.org/wiki/Comparison_of_video_container_formats)
