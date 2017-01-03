@@ -1,0 +1,60 @@
+# AAX Converter
+
+Note that even though this project has "converter" in the title, it doesn't actually perform any re-encoding of aax files.  Instead, the information contained in the files are extracted in their original form, stripped of encryption, and placed in a more open "container" that you can then play on the device or software of your choosing.  This allows me (and you) to archive your legally-obtained audiobooks with zero loss in quality and no messy transcodings (such as from AAX to WAV to FLAC to preserve the audio quality).  It also allows you to keep the cover art and metadata (such as chapters!), which is something that transcoders of AAX files typically do not retain.  Also, since the files are almost simply copied and pasted, this script will convert your aax files about as fast as your hard drive can copy data.
+
+
+## Installation (for Linux only)
+
+First, you'll need to get a copy of audible-activator.  You can simply download the repository as a zip file.  Note that this has it's own set of installation instructions, so be sure to read those carefully.
+
+Second, for Ubuntu:
+
+sudo apt-get install ffmpeg libavcodec-ffmpeg56
+
+Third, download this repo as a zip and extract it.
+
+
+## Use
+
+First, run audible-activator using its instructions and take note of your activation_bytes key and Player ID (Player ID is optional).
+
+Create a config file for yourself, such as by using the sample file as a template:
+
+```
+cp config.sample.sh config.sh
+```
+
+Open that config.sh file up and modify it to meet your needs.  You'll need to supply the following:
+
+1. PLAYER_ID - this comes from audible-activator. this value isn't used by this script yet, but audible-activator gives it to us, so I wanted to be able to keep track of it just in case
+1. ACTIVATION_BYTES - this is the main piece of information that comes from audible-activator - it is 8 characters long
+1. AAX_DIR - the path to your AAX files
+1. COVER_ART_DIR - the directory you'd like to have your extracted cover art saved (be sure this directory exists!)
+1. AUDIO_DIR - the directory you'd like to have your audiobook audio saved (be sure this directory exists!)
+
+In order to get your ACTIVATION_BYTES key, you'll need to run the audible-activator.
+
+
+## Assumptions
+
+While it is not assumed, it is easiest if you run the script from the directory that this project is in.
+
+The file "config.sh" needs to be in the pwd of your current terminal.
+
+The AAX_DIR directory, if supplied as relative rather than absolute, will be relative the pwd of your current terminal.
+
+The COVER_ART_DIR and AUDIO_DIR, if supplied as relative rather than absolute paths, will be relative to the AAX_DIR directory, NOT the directory you are currently in.
+
+The COVER_ART_DIR and AUDIO_DIR exist.
+
+The cover art and audio files will be renamed to reflect the author and title, in the form "author - title".  These values are derived from the metadata on the AAX file, so they should be accurate.
+
+
+## References
+
+https://github.com/inAudible-NG/audible-activator
+https://ffmpeg.org/ffmpeg-codecs.html
+https://ffmpeg.org/ffmpeg-bitstream-filters.html
+https://ffmpeg.org/ffmpeg.html
+https://ffmpeg.org/ffprobe.html
+https://en.wikipedia.org/wiki/Comparison_of_video_container_formats
