@@ -34,6 +34,14 @@ Open that config.sh file up and modify it to meet your needs.  You'll need to su
 
 In order to get your ACTIVATION_BYTES key, you'll need to run the audible-activator.
 
+Once you have installed all of the dependencies from the "Installation" section above and correctly set all variables in the config file, you can run the program:
+
+```
+./convert.sh
+```
+
+Your terminal will show you the ffmpeg information related to the conversion of the files.  When the script has completed, you can find your files in the directories you supplied for COVER_ART_DIR and AUDIO_DIR.
+
 
 ## Assumptions
 
@@ -52,9 +60,9 @@ The cover art and audio files will be renamed to reflect the author and title, i
 
 ## References
 
-https://github.com/inAudible-NG/audible-activator
-https://ffmpeg.org/ffmpeg-codecs.html
-https://ffmpeg.org/ffmpeg-bitstream-filters.html
-https://ffmpeg.org/ffmpeg.html
-https://ffmpeg.org/ffprobe.html
-https://en.wikipedia.org/wiki/Comparison_of_video_container_formats
+[https://github.com/inAudible-NG/audible-activator](https://github.com/inAudible-NG/audible-activator)
+[https://ffmpeg.org/ffmpeg-codecs.html](https://ffmpeg.org/ffmpeg-codecs.html)
+[https://ffmpeg.org/ffmpeg-bitstream-filters.html](https://ffmpeg.org/ffmpeg-bitstream-filters.html)
+[https://ffmpeg.org/ffmpeg.html](https://ffmpeg.org/ffmpeg.html)
+[https://ffmpeg.org/ffprobe.html](https://ffmpeg.org/ffprobe.html)
+[https://en.wikipedia.org/wiki/Comparison_of_video_container_formats](https://en.wikipedia.org/wiki/Comparison_of_video_container_formats)
