@@ -9,7 +9,7 @@ First, you'll need to get a copy of audible-activator.  You can simply download 
 
 Second, for Ubuntu:
 
-sudo apt-get install ffmpeg libavcodec-ffmpeg56
+1. sudo apt-get install ffmpeg libavcodec-ffmpeg56
 
 Third, download this repo as a zip and extract it.
 
@@ -58,6 +58,19 @@ The COVER_ART_DIR and AUDIO_DIR exist.
 The cover art and audio files will be renamed to reflect the author and title, in the form "author - title".  These values are derived from the metadata on the AAX file, so they should be accurate.
 
 
+## Notes
+
+### Matroska Tag Editing
+
+Originally, I assumed I would need to alter some of the tags that existed on the resulting mka file, but it turns out none of them contain any unwanted information.  Here are the installation steps for installing the necessary tools on Linux Mint, which is now no longer needed:
+
+1. wget -q -O - https://mkvtoolnix.download/gpg-pub-moritzbunkus.txt | sudo apt-key add -
+1. echo "deb http://mkvtoolnix.download/ubuntu/"$(cat /etc/upstream-release/lsb-release | grep CODENAME | sed 's/DISTRIB_CODENAME=//g')"/ ./" | sudo tee /etc/apt/sources.list.d/bunkus.org.list
+1. echo "deb-src http://mkvtoolnix.download/ubuntu/"$(cat /etc/upstream-release/lsb-release | grep CODENAME | sed 's/DISTRIB_CODENAME=//g')"/ ./" | sudo tee --append /etc/apt/sources.list.d/bunkus.org.list
+1. sudo apt-get update
+1. sudo apt-get install mkvtoolnix mkvtoolnix-gui
+
+
 ## References
 
 * [https://github.com/inAudible-NG/audible-activator](https://github.com/inAudible-NG/audible-activator)
@@ -66,3 +79,4 @@ The cover art and audio files will be renamed to reflect the author and title, i
 * [https://ffmpeg.org/ffmpeg.html](https://ffmpeg.org/ffmpeg.html)
 * [https://ffmpeg.org/ffprobe.html](https://ffmpeg.org/ffprobe.html)
 * [https://en.wikipedia.org/wiki/Comparison_of_video_container_formats](https://en.wikipedia.org/wiki/Comparison_of_video_container_formats)
+* [https://mkvtoolnix.download/index.html](https://mkvtoolnix.download/index.html)
