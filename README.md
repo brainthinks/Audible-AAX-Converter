@@ -2,10 +2,16 @@
 
 Note that even though this project has "converter" in the title, it doesn't actually perform any re-encoding of aax files.  Instead, the information contained in the files are extracted in their original form, stripped of encryption, and placed in a more open "container" that you can then play on the device or software of your choosing.  This allows me (and you) to archive your legally-obtained audiobooks with zero loss in quality and no messy transcodings (such as from AAX to WAV to FLAC to preserve the audio quality).  It also allows you to keep the cover art and metadata (such as chapters!), which is something that transcoders of AAX files typically do not retain.  Also, since the files are almost simply copied and pasted, this script will convert your aax files about as fast as your hard drive can copy data.
 
-2020 Update: I recently realized that Amazon/Audible does not allow you to keep your library, or at least retain access to it, if you don't pay monthly or yearly.  I thought, like with most other services, that if I paid for an individual item, I would not need to pay a recurring service fee to continue to have access to that item.  Therefore, this project has new importance for me.  I can no longer afford to pay a monthly/yearly fee, but I will lose my entire library of audiobooks if I stop.  According to their website:
+2020 Update: I recently realized that Amazon/Audible does not allow you to keep your library, or at least retain access to it, if you don't pay monthly or yearly.  I thought, like with most other services, that if I paid for an individual item, I would not need to pay a recurring service fee to continue to have access to that item.  Therefore, this project has new importance for me.  I can no longer afford to pay a monthly/yearly fee, but I will lose my entire library of audiobooks if I stop.
+
+According to their website:
 
 ```
-When your membership is canceled your membership will remain active until the end of your final billing period. After that, you will no longer be able to listen to the thousands of included Audible Originals, audiobooks, and podcasts. Even if they are already in your Library. You can continue to listen to free podcasts without membership.
+When your membership is canceled your membership will remain active until the
+end of your final billing period. After that, you will no longer be able to
+listen to the thousands of included Audible Originals, audiobooks, and podcasts.
+Even if they are already in your Library. You can continue to listen to free
+podcasts without membership.
 ```
 
 To me, this shouldn't even be legal.  So, with this anti-consumer business practice being the reality of my situation, this project is now primarily about archiving the digital content that I paid for.
