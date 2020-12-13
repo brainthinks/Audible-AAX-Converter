@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "get": "node ./src/cli/fetchLicense.js"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "query-string": "^6.13.7",
+    "selenium-webdriver": "^4.0.0-alpha.8",
+    "tough-cookie": "^4.0.0"
+  },
+  "devDependencies": {
+    "axios": "^0.21.0",
+    "jsdom": "^16.4.0",
+    "lodash": "^4.17.20"
+  }
+}
