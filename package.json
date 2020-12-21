@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "get": "node ./src/cli/fetchLicense.js"
+    "creds": "rm ./assets/creds.js && cp ./assets/creds.template.js ./assets/creds.js",
+    "get": "node ./src/cli/index.js",
+    "rm-creds": "rm ./assets/creds.js"
   },
   "dependencies": {
     "node-fetch": "^2.6.1",
