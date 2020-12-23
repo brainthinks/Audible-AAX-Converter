@@ -1,0 +1,5 @@
+*
+!.gitignore
+!amazon_credentials.template.js
+!convert_aax_config.sample.sh
+!convert_mkv_config.sample.sh

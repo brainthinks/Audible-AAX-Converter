@@ -19,7 +19,7 @@ const fetch = require('node-fetch');
 const tough = require('tough-cookie');
 const jsdom = require("jsdom");
 
-const { email, password } = require('../assets/creds');
+const { email, password } = require('../config/amazon_credentials');
 
 const Cookie = tough.Cookie;
 const { JSDOM } = jsdom;

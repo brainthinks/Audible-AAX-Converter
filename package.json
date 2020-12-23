@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "creds": "rm ./assets/creds.js && cp ./assets/creds.template.js ./assets/creds.js",
+    "creds": "rm ./config/amazon_credentials.js && cp ./config/amazon_credentials.template.js ./config/amazon_credentials.js",
     "get": "node ./src/cli/index.js",
-    "rm-creds": "rm ./assets/creds.js"
+    "rm-creds": "rm ./config/amazon_credentials.js"
   },
   "dependencies": {
     "node-fetch": "^2.6.1",

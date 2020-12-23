@@ -14,10 +14,10 @@ const baseUrlLicense = 'https://www.audible.com';
 const USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36';
 
 // The relative or absolute path for where to store the license file
-const LICENSE_FILE = './assets/license.bin';
+const LICENSE_FILE = './config/license.bin';
 
 // The relative or absolute path for where to store the activation bytes
-const ACTIVATION_BYTES_FILE = './assets/activation_bytes.txt';
+const ACTIVATION_BYTES_FILE = './config/activation_bytes.txt';
 
 module.exports = {
   baseUrl,

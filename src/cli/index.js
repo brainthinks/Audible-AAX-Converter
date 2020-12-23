@@ -14,12 +14,12 @@ const {
 
 const getActivationBytes = require('../lib/');
 
-// @todo - if these are not supplied in creds.js, throw an error or prompt
-// the user to type them
+// @todo - if these are not supplied in amazon_credentials.js, throw an error
+// or prompt the user to type them
 const {
   email,
   password,
-} = require('../../assets/creds');
+} = require('../../config/amazon_credentials');
 
 async function main () {
   try {

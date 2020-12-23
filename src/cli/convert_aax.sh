@@ -1,31 +1,21 @@
 #!/usr/bin/env bash
 
-# @todo - if readlink fails, the script stops and provides no error message.
+# NOTE: if readlink fails, the script stops and provides no error message.
+# add the 'x' flag here
+set -Eeuox pipefail
 
-set -e
+PATH_TO_CONFIG="./config/convert_aax_config.sh"
 
-PATH_TO_CONFIG="./assets/config.sh"
+source "./src/cli/utils.sh"
 
 # Load the user-supplied configuration
 source "${PATH_TO_CONFIG}"
-
-# Retain the original directory so that as we `cd` around, we can get to the
-# proper relative paths defined in the config file.
-ORIGINAL_DIR="$(pwd)"
 
 # Initialize
 activation_bytes=""
 aax_dir=""
 cover_art_dir=""
 mkv_dir=""
-
-function log_info () {
-  echo "INFO : ${1}"
-}
-
-function log_error () {
-  echo "ERROR: ${1}"
-}
 
 # Get the activation bytes from either the ACTIVATION_BYTES var directly or
 # by getting the contents of the ACTIVATION_BYTES_FILE.
@@ -81,23 +71,6 @@ function set_directories () {
   log_info "Using aax dir: ${aax_dir}"
   log_info "Using cover art dir: ${cover_art_dir}"
   log_info "Using mkv dir: ${mkv_dir}"
-  return 0
-}
-
-# The Audible files and metadata contains some file-system-unfriendly
-# characters.  This helper function will generate a string that only contains
-# characters that are safe for file names.  Tested on Windows and Ubuntu/Mint.
-function universally_compatible_filename () {
-  shopt -s extglob;
-
-  local -r filename="${1}"
-
-  # https://serverfault.com/a/776229
-  local compatible_filename="$(echo "${filename}" | sed -e 's/[\\/:\*\?"<>\|\x01-\x1F\x7F]/ - /g' -e 's/^\(nul\|prn\|con\|lpt[0-9]\|com[0-9]\|aux\)\(\.\|$\)//i' -e 's/^\.*$//' -e 's/^$/NONAME/')"
-
-  compatible_filename="$(echo "${compatible_filename}" | sed -e 's/  / /g')"
-
-  echo "${compatible_filename}"
   return 0
 }
 

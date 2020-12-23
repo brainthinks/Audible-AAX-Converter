@@ -7,7 +7,7 @@ Put your legally purchased and obtained audiobooks from Audible on the device an
 - [Intro](#intro)
 - [Windows](#windows)
 - [MacOS](#macos)
-- [Linux (Ubuntu)](#linux-ubuntu)
+- [Linux (Ubuntu, Mint)](#linux-ubuntu-mint)
   - [Installation](#installation)
   - [Preparing your Amazon account](#preparing-your-amazon-account)
   - [Getting your `activation_bytes`](#getting-your-activation_bytes)
@@ -22,11 +22,12 @@ The goals of the project are to allow you to:
 
 1. Retrieve your activation bytes from Audible, allowing you to decrypt your `AAX` files.
 1. Download your entire library via [https://github.com/mkb79/audible-cli](https://github.com/mkb79/audible-cli).
-1. Convert and decrypted your `AAX` files to `MKV` files.
+1. Decrypt and convert your `AAX` files to `MKV` files.
 1. Convert your `MKV` files to `mp3` so they can be played on most devices and players.
 1. PRESERVE your original `AAX`, `MKV`, images, and metadata.
+1. Close your account if you wish, and still have access to the content you paid for.
 
-2020 Update: I recently realized that Amazon/Audible does not allow you to keep your library, or at least retain access to it, if you don't pay monthly or yearly.  I thought, like with most other services, that if I paid for an individual item, I would not need to pay a recurring service fee to continue to have access to that item.  Therefore, this project has new importance for me.  I can no longer afford to pay a monthly/yearly fee, but I will lose my entire library of audiobooks if I stop.
+I recently realized that Amazon/Audible does not allow you to keep your library, or at least retain access to it, if you don't pay monthly or yearly.  I thought, like with most other services, that if I paid for an individual item, I would not need to pay a recurring service fee to continue to have access to that item.  Therefore, this project has new importance for me.  I can no longer afford to pay a monthly/yearly fee, but I will lose my entire library of audiobooks if I stop.
 
 According to their website:
 
@@ -42,7 +43,7 @@ To me, this shouldn't even be legal.  So, with this anti-consumer business pract
 
 In addition to converting the `AAX` files, this project can now retrieve your activation bytes for you.  Huge shout out to [inAudible-NG/audible-activator](https://github.com/inAudible-NG/audible-activator).  No part of this project would have been possible without that project.  Also shout out to [FFMPEG](https://ffmpeg.org/), which makes the decryption and conversion possible.
 
-2020 Update #2: While researching for this project, I came across a few projects that already do what I was aiming to do with this project.  However, they are more mature and appear to be maintained.  The one that looks the best to me is [https://github.com/mkb79/Audible/](https://github.com/mkb79/Audible/).  Therefore, the future of this projects will likely be to create plugins for the [https://github.com/mkb79/audible-cli](https://github.com/mkb79/audible-cli) project.
+While researching for this project, I came across a few projects that already do what I was aiming to do with this project.  However, they are more mature and appear to be maintained.  The one that looks the best to me is [https://github.com/mkb79/Audible/](https://github.com/mkb79/Audible/).  Therefore, the future of this projects will likely be to create plugins for the [https://github.com/mkb79/audible-cli](https://github.com/mkb79/audible-cli) project.
 
 
 ## Windows
@@ -55,18 +56,22 @@ TODO
 TODO
 
 
-## Linux (Ubuntu)
+## Linux (Ubuntu, Mint)
 
 ### Installation
 
 1. Install FFMPEG
-    1. `sudo apt-get install ffmpeg libavcodec-ffmpeg56`
-1. A recent version of `node` is needed, since most of this project is written in javascript.  I recommend using [tj/n](https://github.com/tj/n) to install and manage node:
+    1. `sudo apt-get install ffmpeg libavcodec-ffmpeg56 mkvtoolnix`
+1. A recent version of `node` is needed, since most of this project is written in javascript.  I recommend using [tj/n](https://github.com/tj/n) to install and manage node.  You can install `tj/n` using the [`n-install` project](https://github.com/mklement0/n-install):
     1. `curl -L https://git.io/n-install | bash`
 1. Clone or download this repo
-1. A headless browser (right now, only Firefox is supported) is needed. Install geckodriver manually or with provided script:
+    1. `git clone https://github.com/brainthinks/Audible-AAX-Converter.git`
+1. A browser driver
+    1. Right now, only Firefox is supported
+    1. Install geckodriver manually or with provided script:
     1. `./scripts/install-geckodriver.sh`
 1. Install the npm dependencies
+    1. `cd Audible-AAX-Converter`
     1. `yarn` or `npm i`
 
 ### Preparing your Amazon account
@@ -75,13 +80,13 @@ NOTE - I highly recommend you use [https://github.com/mkb79/Audible](https://git
 
 If you want to proceed with my `activation_bytes` solution...
 
-Amazon does not like it when you try to authenticate using a script.  It's why I had to make it use a headless browser.  In creating and testing this script, I had to enable two-factor authentication using the app on my phone.  There are likely other ways, but I found that clicking "allow" in the Android app the easiest.
+Amazon does not like it when you try to authenticate using a script.  It's why I chose to make it use a headless browser.  In creating and testing this script, I had to enable two-factor authentication using the app on my phone.  There are likely other ways, but I found that clicking "allow" in the Android app the easiest.
 
-TODO - unfortunately, I do not have the steps necessary to enable this on your Amazon account.  I don't remember what steps I had to take to get 2FA on my phone.
+TODO - unfortunately, I do not have the steps necessary to enable this on your Amazon account.  I don't remember what steps I had to take to get 2FA on my phone.  Another reason to use [https://github.com/mkb79/audible-cli](https://github.com/mkb79/audible-cli) for this part.
 
 In an abundance of caution, I have decided to leave the "headless" firefox (used to authenticate) visible, so that if something does end up happening where you have to enter a one-time-password or code or something, you can at least see what's going on.  If you're brave though, you can switch back to headless firefox.
 
-WARNING - I had to reset my password once while creating this project.  I tried (and failed) to authenticate with this script's iterations dozens of times, so I doubt you'll have to change your password as long as you don't run it too many times.  You should only need to run it once.
+WARNING - I had to reset my password once while creating this project.  I tried (and failed) to authenticate with the work-in-progress iterations of this script dozens of times, so I doubt you'll have to change your password as long as you don't run it too many times.  You should only need to run it once.
 
 Check [inAudible-NG/audible-activator](https://github.com/inAudible-NG/audible-activator) for more info if you're still uncomfortable.  They even have a [project](https://github.com/inAudible-NG/RainbowCrack-NG) that uses rainbow tables to allow you to figure out what your activation bytes are without ever having to log in to Amazon or Audible.  I haven't tried it, but based on the reputation of `audible-activator`, and the fact that the activation bytes are simply a series of 8 hex characters, I bet it would work.
 
@@ -93,15 +98,15 @@ Your `activation_bytes` is the decryption key needed to convert your `AAX` files
 
 To get your activation bytes:
 
-1. Log into your amazon account in Firefox (seems to help)
+1. Log into your Amazon account in your local Firefox browser (maybe helps?)
 1. Make a credentials file, which will be used to read in your account credentials:
     1. `yarn run creds`
-1. Edit that file to insert your email and password
+1. Edit the file `./` to insert your email and password
 1. Run the `cli` script
     1. `yarn run get`
 1. If the script completed successfully, you can delete your credentials file if you wish
     1. `yarn run rm-creds`
-1. Your activation bytes will be written to `./assets/activation_bytes.txt`
+1. Your activation bytes will be written to `./config/activation_bytes.txt`
 
 ### Downloading your library
 
@@ -116,12 +121,12 @@ Note that even though this project has "converter" in the title, this step doesn
 1. All commands are assumed to be run from the project directory
     1. e.g. if you run `ls`, you should see `README.md` etc.
 1. Create a config file
-    1. `cp ./assets/config.sample.sh ./assets/config.sh`
-1. Modify the values in `./assets/config.sh`.  Each var is documented in the file.
+    1. `cp ./config/convert_aax_config.sample.sh ./config/convert_aax_config.sh`
+1. Modify the values in `./config/convert_aax_config.sh`.  Each var is documented in the file.
 1. Run the script!
-    1. `./src/cli/convert.sh`
+    1. `./src/cli/convert_aax.sh`
 
-Your terminal will show you the `ffmpeg` information related to the conversion of the files.  When the script has completed, you can find your files in the directories you supplied in `./assets/config.sh`.
+Your terminal will show you the `ffmpeg` information related to the conversion of the files.  When the script has completed, you can find your files in the directories you supplied in `./config/convert_aax_config.sh`.
 
 ### Preparing your `MKV` files
 
@@ -142,6 +147,15 @@ To put these books in a format that is easiest played on the most devices and th
     1. Remember, you still have the original archived / preserved as a lossless `MKV`
 1. Generate the playlist (`m3u` file) and cover art
 
+Here's how to do it:
+
+1. All commands are assumed to be run from the project directory
+    1. e.g. if you run `ls`, you should see `README.md` etc.
+1. Create a config file
+    1. `cp ./config/convert_mkv_config.sample.sh ./config/convert_mkv_config.sh`
+1. Modify the values in `./config/convert_mkv_config.sh`.  Each var is documented in the file.
+1. Run the script!
+    1. `./src/cli/convert_mkv.sh`
 
 
 ## References
@@ -150,6 +164,7 @@ To put these books in a format that is easiest played on the most devices and th
 * [https://github.com/mkb79/audible-cli](https://github.com/mkb79/audible-cli)
 * [https://github.com/inAudible-NG/audible-activator](https://github.com/inAudible-NG/audible-activator)
 * [https://github.com/kholia/inAudible](https://github.com/kholia/inAudible)
+* [https://github.com/kennedn/kindlepass](https://github.com/kennedn/kindlepass)
 * [https://www.filelem.com/audible-file-format/](https://www.filelem.com/audible-file-format/)
 * [https://ffmpeg.org/ffmpeg-codecs.html](https://ffmpeg.org/ffmpeg-codecs.html)
 * [https://ffmpeg.org/ffmpeg-bitstream-filters.html](https://ffmpeg.org/ffmpeg-bitstream-filters.html)
