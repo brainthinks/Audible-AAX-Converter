@@ -11,7 +11,7 @@
     "tough-cookie": "^4.0.0"
   },
   "devDependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "jsdom": "^16.4.0",
     "lodash": "^4.17.20"
   }
