@@ -13,6 +13,6 @@
   "devDependencies": {
     "axios": "^0.21.0",
     "jsdom": "^16.4.0",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.21"
   }
 }
