@@ -5,28 +5,20 @@ Put your legally purchased and obtained audiobooks from Audible on the device an
 ## Table of Contents <!-- omit in toc -->
 
 - [Mission Statement](#mission-statement)
-- [Linux (Mint, Ubuntu)](#linux-mint-ubuntu)
-    - [Prerequisites](#prerequisites)
-    - [Getting your activation bytes](#getting-your-activation-bytes)
-    - [Downloading your library](#downloading-your-library)
-    - [Converting your `AAX` and `AAXC` files](#converting-your-aax-and-aaxc-files)
-    - [Preparing your `MKV` files](#preparing-your-mkv-files)
-- [Windows](#windows)
-- [MacOS](#macos)
+- [Use](#use)
+    - [Linux (Mint, Ubuntu)](#linux-mint-ubuntu)
+        - [Prerequisites](#prerequisites)
+        - [Getting your activation bytes](#getting-your-activation-bytes)
+        - [Downloading your library](#downloading-your-library)
+        - [Decrypting your `AAX` and `AAXC` files to `MKV`](#decrypting-your-aax-and-aaxc-files-to-mkv)
+    - [Converting your `MKV` files to `mp3`](#converting-your-mkv-files-to-mp3)
+    - [Windows](#windows)
+    - [MacOS](#macos)
 - [References](#references)
 
 ## Mission Statement
 
-The goals of the project are to allow you to:
-
-1. Retrieve your activation bytes from Audible (via [mkb79/audible-cli](https://github.com/mkb79/audible-cli)), allowing you to decrypt your `AAX` and `AAXC` files.
-1. Download your entire library (via [mkb79/audible-cli](https://github.com/mkb79/audible-cli)).
-1. Decrypt and convert your `AAX` and `AAXC` files to `MKV` files.
-1. Convert your `MKV` files to `mp3` so they can be played on most devices and players.
-1. PRESERVE your original `AAX`, `AAXC`, `MKV`, images, and metadata.
-1. Close your account if you wish, and still have access to the content you paid for.
-
-I recently realized that Amazon/Audible does not allow you to keep your library, or at least retain access to it, if you don't pay monthly or yearly.  I thought, like with most other services, that if I paid for an individual item, I would not need to pay a recurring service fee to continue to have access to that item.  Therefore, this project has new importance for me.  I can no longer afford to pay a monthly/yearly fee, but I will lose my entire library of audiobooks if I stop.
+Amazon/Audible claims that they do not allow you to keep your library, or at least retain access to it, if you don't pay monthly or yearly.
 
 According to their website (as of 2020):
 
@@ -38,11 +30,26 @@ Even if they are already in your Library. You can continue to listen to free
 podcasts without membership.
 ```
 
+I thought, like with most other services, that if I paid for an individual item, I would not need to pay a recurring service fee to continue to have access to that item. I can no longer afford to pay a monthly/yearly fee, but I will lose my entire library of audiobooks if I stop.
+
 I want to have access to the things that I pay for on my own terms.
 
-## Linux (Mint, Ubuntu)
+The goals of the project are to allow you to:
 
-### Prerequisites
+1. Retrieve your activation bytes from Audible (via [mkb79/audible-cli](https://github.com/mkb79/audible-cli)), allowing you to decrypt your `AAX` and `AAXC` files.
+1. Download your entire library (via [mkb79/audible-cli](https://github.com/mkb79/audible-cli)).
+1. Decrypt and convert your `AAX` and `AAXC` files to `MKV` files.
+1. Convert your `MKV` files to `mp3` so they can be played on most devices and players.
+1. PRESERVE your original `AAX`, `AAXC`, `MKV`, images, and metadata.
+1. Close your account if you wish, and still have access to the content you paid for.
+
+## Use
+
+Follow the steps below, in order, to get your audiobooks as easily-playable mp3s.
+
+### Linux (Mint, Ubuntu)
+
+#### Prerequisites
 
 TODO
 
@@ -52,13 +59,13 @@ You'll need at least ffmpeg (I'm currently using `4.4.2-0ubuntu0.22.04.1`) and j
 sudo apt install ffmpeg jq
 ```
 
-### Getting your activation bytes
+#### Getting your activation bytes
 
 This is essentially your decryption key for your AAX files, and possibly also partially for AAXC files. Check out the excellent [mkb79/audible-cli](https://github.com/mkb79/audible-cli) project.
 
 Use that project to retrieve your activation bytes, and store them somewhere, such as in `./config/activation_bytes.txt`.
 
-### Downloading your library
+#### Downloading your library
 
 Once again, see the excellent [mkb79/audible-cli](https://github.com/mkb79/audible-cli) for a tool that will allow you to download your entire library.
 
@@ -77,7 +84,7 @@ audible download -a "${ASIN}" \
     --chapter
 ```
 
-### Converting your `AAX` and `AAXC` files
+#### Decrypting your `AAX` and `AAXC` files to `MKV`
 
 Note that even though this project has "converter" in the title, this step doesn't actually perform any re-encoding of `AAX` or `AAXC` files.  Instead, the information contained in the files is extracted in its original form, stripped of encryption, and placed in a more open "container" that you can then play on the device or software of your choosing.  This allows us to archive our legally-obtained audiobooks with zero loss in quality and no messy / lossy transcodings or re-encodings (such as from `AAX` to `WAV` to `FLAC` to preserve the audio quality).  It also allows you to keep the cover art and metadata (such as chapters!), which is something that transcoders of `AAX` files typically do not retain.  Also, since the files are almost simply copied and pasted, this script will convert your `AAX` and `AAXC` files about as fast as your hard drive can copy data.
 
@@ -91,7 +98,7 @@ Note that even though this project has "converter" in the title, this step doesn
 
 When the script has completed, you can find your files in the directories you supplied in `./config/convert_aax_config.sh`.
 
-### Preparing your `MKV` files
+### Converting your `MKV` files to `mp3`
 
 You should now be able to play your `MKV` files with the player of your choosing, though MANY players cannot handle files this large / long. The only one I could get to work on my machine was Celluloid. VLC and SMPlayer fail.  Since these huge files in `MKV` format are not necessarily the most portable, I use them strictly for archival purposes.  Since each book is typically many hours long, I want them to be in a format that just about any device or program can play, and can keep track of. In my experience, most media players on Android devices have difficulty seeking huge files.  If I try to skip around, I am often sent back to the very beginning of the book, and skip ahead by 4 hours to get back to the point where I stopped listening.  Even if I don't seek manually, but use a program that can seek to the time I was at when I stopped listening, the player can't do it, and I am sent back to the beginning.
 
@@ -122,11 +129,13 @@ Here's how to do it:
 1. Run the script!
     - `./src/cli/convert_mkv.sh`
 
-## Windows
+Note that going from `MKV` to `mp3` takes significantly longer than going from `AAX` to `MKV`, since each audio file has to be re-encoded.
+
+### Windows
 
 TODO
 
-## MacOS
+### MacOS
 
 TODO
 
