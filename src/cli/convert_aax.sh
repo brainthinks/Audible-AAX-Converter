@@ -2,7 +2,7 @@
 
 # NOTE: if readlink fails, the script stops and provides no error message.
 # add the 'x' flag here
-set -Eeuox pipefail
+set -Eeuo pipefail
 
 PATH_TO_CONFIG="./config/convert_aax_config.sh"
 
@@ -44,7 +44,7 @@ function set_activation_bytes () {
   fi
 
   activation_bytes="${ACTIVATION_BYTES}"
-  log_info "Found activation bytes: ${activation_bytes}"
+  log_success "Found activation bytes: ${activation_bytes}"
   return 0
 }
 
@@ -74,61 +74,140 @@ function set_directories () {
   return 0
 }
 
+function process_aax () {
+  aax_file="${1}"
+
+  log_info "Processing ${aax_file}"
+
+  # construct the filename
+  AUTHOR="$(ffprobe -activation_bytes "${activation_bytes}" -i "${aax_file}" 2>&1 | grep artist | head -1 | sed -e 's/    artist          : \(.*\)/\1/')"
+  TITLE="$(ffprobe -activation_bytes "${activation_bytes}" -i "${aax_file}" 2>&1 | grep title | head -1 | sed -e 's/    title           : \(.*\)/\1/')"
+
+  if [ -z "${RENAME}" ]; then
+    # @see - https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
+    local filename="$(basename -- "${aax_file}")"
+    local extension="${filename##*.}"
+    local file_name="${filename%.*}"
+    FILENAME="${file_name}"
+  else
+    FILENAME="$(universally_compatible_filename "${AUTHOR} - ${TITLE}")"
+  fi
+
+  log_info "Found author: ${AUTHOR}"
+  log_info "Found title: ${TITLE}"
+
+  log_step "Extracting cover art..."
+  cover_art_file="${cover_art_dir}/${FILENAME}_extracted_cover_art.jpg"
+  ffmpeg \
+    -hide_banner \
+    -loglevel panic \
+    -y \
+    -activation_bytes "${activation_bytes}" \
+    -i "${aax_file}" \
+    -c:v copy \
+    -an \
+    -sn \
+    "${cover_art_file}"
+  log_success "Successfully created ${cover_art_file}"
+
+  log_step "Decrypting audio file..."
+  mkv_file="${mkv_dir}/${FILENAME}.mkv"
+  ffmpeg \
+    -hide_banner \
+    -loglevel panic \
+    -y \
+    -activation_bytes "${activation_bytes}" \
+    -i "${aax_file}" \
+    -c:a copy \
+    -c:v copy \
+    -sn \
+    "${mkv_file}"
+  log_success "Successfully created ${mkv_file}"
+}
+
+function process_aaxc () {
+  aaxc_file="${1}"
+
+  log_info "Processing ${aaxc_file}"
+
+  AUTHOR="$(ffprobe -activation_bytes "${activation_bytes}" -i "${aaxc_file}" 2>&1 | grep artist | head -1 | sed -e 's/    artist          : \(.*\)/\1/')"
+  TITLE="$(ffprobe -activation_bytes "${activation_bytes}" -i "${aaxc_file}" 2>&1 | grep title | head -1 | sed -e 's/    title           : \(.*\)/\1/')"
+
+  if [ -z "${RENAME}" ]; then
+    # @see - https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
+    local filename="$(basename -- "${aaxc_file}")"
+    local extension="${filename##*.}"
+    local file_name="${filename%.*}"
+    FILENAME="${file_name}"
+  else
+    FILENAME="$(universally_compatible_filename "${AUTHOR} - ${TITLE}")"
+  fi
+
+  log_info "Found author: ${AUTHOR}"
+  log_info "Found title: ${TITLE}"
+
+  log_step "Extracting cover art..."
+  cover_art_file="${cover_art_dir}/${FILENAME}_extracted_cover_art.jpg"
+  ffmpeg \
+    -hide_banner \
+    -loglevel panic \
+    -y \
+    -activation_bytes "${activation_bytes}" \
+    -i "${aaxc_file}" \
+    -c:v copy \
+    -an \
+    -sn \
+    "${cover_art_file}"
+  log_success "Successfully created ${cover_art_file}"
+
+  # Note that this expects that you've already used mkb79/audible-cli, e.g.
+  #
+  # audible download -a "${ASIN}" \
+  #   --aax-fallback \
+  #   --pdf \
+  #   --cover \
+  #   --cover-size 1215 \
+  #   --chapter
+  #
+  log_step "Extracting decryption values from voucher file..."
+  voucher_file_name="${aaxc_file%.*}.voucher"
+  audible_key="$(jq -r ".content_license.license_response.key" "${voucher_file_name}")"
+  audible_iv="$(jq -r ".content_license.license_response.iv" "${voucher_file_name}")"
+
+  log_info "Found key: ${audible_key}"
+  log_info "Found iv: ${audible_iv}"
+
+  log_step "Decrypting audio file..."
+  mkv_file="${mkv_dir}/${FILENAME}.mkv"
+  # @see https://stackoverflow.com/a/64262075
+  # @see https://patchwork.ffmpeg.org/project/ffmpeg/patch/17559601585196510@sas2-2fa759678732.qloud-c.yandex.net/
+  ffmpeg \
+    -hide_banner \
+    -loglevel panic \
+    -y \
+    -activation_bytes "${activation_bytes}" \
+    -audible_key "${audible_key}" \
+    -audible_iv "${audible_iv}" \
+    -i "${aaxc_file}" \
+    -c:a copy \
+    -c:v copy \
+    -sn \
+    "${mkv_file}"
+  log_success "Successfully created ${mkv_file}"
+}
+
 function main () {
   set_activation_bytes
   set_directories
 
   cd "${aax_dir}"
 
-  # process every audiobook
   for aax_file in *.aax; do
-    log_info "Processing ${aax_file}"
+    process_aax "${aax_file}"
+  done
 
-    # construct the filename
-    AUTHOR="$(ffmpeg -activation_bytes "${activation_bytes}" -i "${aax_file}" 2>&1 | grep artist | head -1 | sed -e 's/    artist          : \(.*\)/\1/')"
-    TITLE="$(ffmpeg -activation_bytes "${activation_bytes}" -i "${aax_file}" 2>&1 | grep title | head -1 | sed -e 's/    title           : \(.*\)/\1/')"
-
-    if [ -z "${RENAME}" ]; then
-      # @see - https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
-      local filename="$(basename -- "${aax_file}")"
-      local extension="${filename##*.}"
-      local file_name="${filename%.*}"
-      FILENAME="${file_name}"
-    else
-      FILENAME="$(universally_compatible_filename "${AUTHOR} - ${TITLE}")"
-    fi
-
-    log_info "Found author: ${AUTHOR}"
-    log_info "Found title: ${TITLE}"
-
-    # save the cover art
-    cover_art_file="${cover_art_dir}/${FILENAME}_extracted_cover_art.jpg"
-    ffmpeg \
-      -hide_banner \
-      -loglevel panic \
-      -y \
-      -activation_bytes "${activation_bytes}" \
-      -i "${aax_file}" \
-      -c:v copy \
-      -an \
-      -sn \
-      "${cover_art_file}"
-    log_info "Successfully created ${cover_art_file}"
-
-    # save the audio
-    mkv_file="${mkv_dir}/${FILENAME}.mkv"
-    ffmpeg \
-      -hide_banner \
-      -loglevel panic \
-      -y \
-      -activation_bytes "${activation_bytes}" \
-      -i "${aax_file}" \
-      -c:a copy \
-      -c:v copy \
-      -sn \
-      "${mkv_file}"
-    log_info "Successfully created ${mkv_file}"
-
+  for aaxc_file in *.aaxc; do
+    process_aaxc "${aaxc_file}"
   done
 
   cd "${ORIGINAL_DIR}"
