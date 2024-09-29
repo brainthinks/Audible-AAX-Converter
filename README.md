@@ -8,12 +8,12 @@ Put your legally purchased and obtained audiobooks from Audible on the device an
 - [Windows](#windows)
 - [MacOS](#macos)
 - [Linux (Ubuntu, Mint)](#linux-ubuntu-mint)
-  - [Installation](#installation)
-  - [Preparing your Amazon account](#preparing-your-amazon-account)
-  - [Getting your `activation_bytes`](#getting-your-activation_bytes)
-  - [Downloading your library](#downloading-your-library)
-  - [Converting your `AAX` files](#converting-your-aax-files)
-  - [Preparing your `MKV` files](#preparing-your-mkv-files)
+    - [Installation](#installation)
+    - [Preparing your Amazon account](#preparing-your-amazon-account)
+    - [Getting your `activation_bytes`](#getting-your-activation_bytes)
+    - [Downloading your library](#downloading-your-library)
+    - [Converting your `AAX` files](#converting-your-aax-files)
+    - [Preparing your `MKV` files](#preparing-your-mkv-files)
 - [References](#references)
 
 ## Intro
@@ -31,7 +31,7 @@ I recently realized that Amazon/Audible does not allow you to keep your library,
 
 According to their website:
 
-```
+```text
 When your membership is canceled your membership will remain active until the
 end of your final billing period. After that, you will no longer be able to
 listen to the thousands of included Audible Originals, audiobooks, and podcasts.
@@ -114,6 +114,19 @@ After discovering the excellent work in the [https://github.com/mkb79/Audible](h
 
 See the project [https://github.com/mkb79/audible-cli](https://github.com/mkb79/audible-cli) for a tool thata will allow you to download your library.
 
+```bash
+audible-quickstart
+
+audible list
+
+audible download -a "${ASIN}" \
+    --aax-fallback \
+    --pdf \
+    --cover \
+    --cover-size 1215 \
+    --chapter
+```
+
 ### Converting your `AAX` files
 
 Note that even though this project has "converter" in the title, this step doesn't actually perform any re-encoding of `AAX` files.  Instead, the information contained in the files is extracted in its original form, stripped of encryption, and placed in a more open "container" that you can then play on the device or software of your choosing.  This allows me (and you) to archive your legally-obtained audiobooks with zero loss in quality and no messy / lossy transcodings or re-encodings (such as from `AAX` to `WAV` to `FLAC` to preserve the audio quality).  It also allows you to keep the cover art and metadata (such as chapters!), which is something that transcoders of `AAX` files typically do not retain.  Also, since the files are almost simply copied and pasted, this script will convert your `AAX` files about as fast as your hard drive can copy data.
@@ -130,13 +143,17 @@ Your terminal will show you the `ffmpeg` information related to the conversion o
 
 ### Preparing your `MKV` files
 
-You should now be able to play your `MKV` files no problem now.  However, these huge files in `MKV` format are not necessarily the most portable, and for me are simply for archival purposes.  Since each book is typically many hours long, I want them to be in a format that just about any device or program can play, and can keep track of.
+You should now be able to play your `MKV` files now, though MANY players cannot handle files this large / long. The only one I could get to work on my machine was Celluloid. VLC and SMPlayer fail.  Since these huge files in `MKV` format are not necessarily the most portable, I use them strictly for archival purposes.  Since each book is typically many hours long, I want them to be in a format that just about any device or program can play, and can keep track of.
 
 In my experience, most media players on Android devices have difficulty seeking huge files.  If I try to skip around, I am often sent back to the very beginning of the book, and skip ahead by 4 hours to get back to the point where I stopped listening.  Even if I don't seek manually, but use a program that can seek to the time I was at when I stopped listening, the player can't do it, and I am sent back to the beginning.
 
 In my experience, the easiest way to get around this limitation of these players is to split the books up by Chapter, so that each Chapter is its own file.  Since doing that, I have not had a problem seeking and skipping around, and the player I use can resume the book where I last left off.
 
-The player I recommend for this (at least on Android) is Voice Audiobook app, which is on the Google Play store - [https://play.google.com/store/apps/details?id=de.ph1b.audiobook&hl=en&gl=US](https://play.google.com/store/apps/details?id=de.ph1b.audiobook&hl=en&gl=US).  The project is open source - [https://github.com/PaulWoitaschek/Voice](https://github.com/PaulWoitaschek/Voice).
+The player I recommend for this (at least on Android) is Voice Audiobook app, which is on the Google Play store, FDroid, and GitHub:
+
+- Google Play Store: [https://play.google.com/store/apps/details?id=de.ph1b.audiobook&hl=en-US](https://play.google.com/store/apps/details?id=de.ph1b.audiobook&hl=en-US)
+- FDroid: [https://f-droid.org/packages/de.ph1b.audiobook/](https://f-droid.org/packages/de.ph1b.audiobook/)
+- GitHub: [https://github.com/PaulWoitaschek/Voice](https://github.com/PaulWoitaschek/Voice).
 
 To put these books in a format that is easiest played on the most devices and the most players (in my experience), I do the following:
 

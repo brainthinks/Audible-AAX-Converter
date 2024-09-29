@@ -17,11 +17,19 @@ function join_by () {
 }
 
 function log_info () {
-  echo "INFO : $(join_by " - " "$@")"
+  echo "INFO    ℹ️ : $(join_by " - " "$@")"
+}
+
+function log_step () {
+  echo "STEP    🛠️ : $(join_by " - " "$@")"
+}
+
+function log_success () {
+  echo "SUCCESS ✅ : $(join_by " - " "$@")"
 }
 
 function log_error () {
-  echo "ERROR: ${1}"
+  echo "ERROR   ❌ : $(join_by " - " "$@")"
 }
 
 # The Audible files and metadata contains some file-system-unfriendly

@@ -49,13 +49,15 @@ function initialize_playlist () {
 
   playlist_file="${destination_dir}/${handle}.m3u"
 
+  log_step "Initializing playlist ${playlist_file}..."
+
   rm -f "${playlist_file}"
   touch "${playlist_file}"
 
   # vlc puts this at the top of the playlist it generates
   add_to_playlist "#EXTM3U"
 
-  log_info "${handle}" "Playlist initialized"
+  log_success "Playlist initialized: ${handle}"
 
   return 0
 }
@@ -80,7 +82,7 @@ function _create_chapter_mp3 () {
   local jpeg_file="${destination_dir}/${handle}.jpeg"
   local file_name="${destination_dir}/${chapter_title}.mp3"
 
-  log_info "${handle}" "${chapter_title} of ${chapter_count}" "Creating mp3 file..."
+  log_step "${handle}" "${chapter_title} of ${chapter_count}" "Creating mp3 file..."
 
   ffmpeg \
     -y \
@@ -114,7 +116,7 @@ function _create_chapter_mp3 () {
     -c:v "copy" \
     "${file_name}"
 
-  log_info "${handle}" "${chapter_title} of ${chapter_count}" "Successfully created mp3 file"
+  log_success "${handle}" "${chapter_title} of ${chapter_count}" "Successfully created mp3 file"
 
   add_to_playlist "./${chapter_title}.mp3"
 
@@ -228,14 +230,10 @@ function main () {
 
   # process every audiobook
   for mkv_file in *.mkv; do
-    log_info "Processing ${mkv_file}"
+    log_info "Processing MKV file: ${mkv_file}"
 
-    # Note that ffmpeg will return an error code here, hence the extra `true`
-    # @see - https://stackoverflow.com/questions/6550484/prevent-grep-returning-an-error-when-input-doesnt-match
-    AUTHOR="$({ ffmpeg -i "${mkv_file}" 2>&1 || true; } | { grep ARTIST || true; } | head -1 | sed -e 's/    ARTIST          : \(.*\)/\1/')"
-    # I encountered at least one audiobook that successfully retrieved the
-    # title, yet the grep command still returned an error code.  No idea why
-    TITLE="$({ ffmpeg -i "${mkv_file}" 2>&1 || true; } | { grep title || true; } | head -1 | sed -e 's/    title           : \(.*\)/\1/')"
+    AUTHOR="$(ffprobe -i "${mkv_file}" 2>&1 | grep ARTIST | head -1 | sed -e 's/    ARTIST          : \(.*\)/\1/')"
+    TITLE="$(ffprobe -i "${mkv_file}" 2>&1 | grep title | head -1 | sed -e 's/    title           : \(.*\)/\1/')"
 
     # "Your First Listen" does not have an author in the AAX metadata
     if [ -z "${AUTHOR}" ]; then
@@ -259,16 +257,17 @@ function main () {
       continue
     fi
 
+    log_step "Processing ${audiobook_handle}..."
+
     initialize_playlist "${audiobook_handle}" "${audiobook_directory}"
     create_images "${mkv_file}" "${audiobook_handle}" "${audiobook_directory}"
     create_mp3s "${mkv_file}" "${audiobook_handle}" "${audiobook_directory}" "${AUTHOR}" "${TITLE}"
     mark_as_complete "${audiobook_handle}" "${audiobook_directory}"
 
-    log_info "${audiobook_handle}" "Conversion to mp3 complete"
-    # break
+    log_success "Conversion to mp3 complete: ${audiobook_handle}"
   done
 
-  log_info "Successfully converted all audiobooks to mp3"
+  log_success "Successfully converted all audiobooks to mp3"
 
   cd "${ORIGINAL_DIR}"
 
